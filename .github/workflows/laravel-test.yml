@@ -24,6 +24,7 @@ jobs:
           echo "APP_ENV=testing" >> .env
           echo "APP_DEBUG=true" >> .env
           echo "APP_KEY=" >> .env
+          echo "ADMIN_API_KEY=TEST_ADMIN_API_KEY" >> .env
 
       - name: Generate APP_KEY
         run: php artisan key:generate
