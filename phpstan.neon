@@ -1,0 +1,9 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - app
+    # 以前は「Unsafe usage of new static」を無視していたが、
+    # 現在は発生しないため ignoreErrors は不要になった。
