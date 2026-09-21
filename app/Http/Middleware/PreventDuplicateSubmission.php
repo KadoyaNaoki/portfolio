@@ -98,10 +98,13 @@ class PreventDuplicateSubmission
 	/**
 	 * キャッシュのキーを作る.
 	 *
-	 * トークンだけだと別ユーザー間で衝突しうるため、セッション ID も混ぜる。
+	 * セッション ID は混ぜない。ログイン成功時の session()->regenerate() や
+	 * フラッシュセッションの発行でリクエストごとに ID が変わり、
+	 * 同一トークンでもキャッシュヒットしなくなるため。
+	 * トークンは 40 文字のランダム値なので、キーとして十分に一意。
 	 */
 	private function cacheKey(string $token): string
 	{
-		return 'form-submitted:'.sha1(session()->getId().'|'.$token);
+		return 'form-submitted:'.sha1($token);
 	}
 }
