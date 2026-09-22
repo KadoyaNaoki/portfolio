@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# storage/logs が存在しない場合は作成
+mkdir -p storage/logs
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/cache
+mkdir -p storage/framework/views
+
 # Laravel の書き込み権限（storage 全体に付与）
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache storage/logs storage/framework
