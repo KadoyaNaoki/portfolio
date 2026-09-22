@@ -20,8 +20,11 @@ COPY . .
 # Composer install
 RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
+# devDependencies を含めて npm install させる
+ENV NODE_ENV=development
+
 # Node パッケージ
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # Vite ビルド用の仮環境変数
 ENV APP_URL=http://localhost
