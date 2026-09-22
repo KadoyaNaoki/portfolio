@@ -1,9 +1,6 @@
 # PHP + Apache
 FROM php:8.2-apache
 
-ENV APP_URL=http://localhost
-ENV VITE_URL=http://localhost
-
 # 必要な拡張をインストール
 RUN apt-get update && apt-get install -y \
     libpng-dev libonig-dev libxml2-dev zip unzip git curl \
@@ -20,15 +17,11 @@ COPY --from=composer:2.6 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 COPY . .
 
-# Composer install（高速化）
-RUN composer config -g process-timeout 2000
+# Composer install
 RUN composer install --no-dev --optimize-autoloader --prefer-dist
 
 # Node パッケージ
 RUN npm install
-
-# Vite ビルド
-RUN npm run build
 
 # Laravel キャッシュ
 RUN php artisan config:cache
