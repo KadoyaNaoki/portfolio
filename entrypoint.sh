@@ -6,14 +6,14 @@ mkdir -p storage/framework/sessions
 mkdir -p storage/framework/cache
 mkdir -p storage/framework/views
 
-# Laravel の書き込み権限（起動後に実行されるので確実に効く）
+# 権限付与（Render ではこれが必須）
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 
 # キャッシュクリア
-php artisan view:clear
-php artisan config:clear
-php artisan route:clear
+php artisan view:clear || true
+php artisan config:clear || true
+php artisan route:clear || true
 
 # マイグレーション（失敗しても継続）
 php artisan migrate --force || true
