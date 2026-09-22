@@ -33,15 +33,9 @@ RUN npm run build
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
-# Laravel の書き込み権限を付与（重要）
-RUN chown -R www-data:www-data storage bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache
-
-# キャッシュクリア（安全）
-RUN php artisan view:clear && php artisan config:clear && php artisan route:clear
-
-# マイグレーション（失敗しても継続）
-RUN php artisan migrate --force || true
+# entrypoint.sh をコピー
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
-CMD ["apache2-foreground"]
+CMD ["/entrypoint.sh"]
