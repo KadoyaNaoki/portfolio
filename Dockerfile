@@ -29,14 +29,6 @@ RUN npm install --legacy-peer-deps
 # Vite ビルド（1回だけ）
 RUN npm run build
 
-# Laravel キャッシュ
-RUN php artisan optimize:clear
-RUN php artisan config:clear
-RUN php artisan route:clear
-RUN php artisan view:clear
-RUN php artisan config:cache
-RUN php artisan route:cache
-
 # Apache の DocumentRoot を Laravel の public に設定
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
