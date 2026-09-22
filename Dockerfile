@@ -33,6 +33,10 @@ RUN npm run build
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
+# Laravel の書き込み権限を付与（重要）
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
+
 # entrypoint.sh をコピー
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
