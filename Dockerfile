@@ -1,8 +1,8 @@
-ENV APP_URL=http://localhost
-ENV VITE_URL=http://localhost
-
 # PHP + Apache
 FROM php:8.2-apache
+
+ENV APP_URL=http://localhost
+ENV VITE_URL=http://localhost
 
 # 必要な拡張をインストール
 RUN apt-get update && apt-get install -y \
