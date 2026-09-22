@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Laravel の書き込み権限
+# Laravel の書き込み権限（storage 全体に付与）
 chown -R www-data:www-data storage bootstrap/cache
-chmod -R 775 storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 
 # キャッシュクリア
 php artisan view:clear
