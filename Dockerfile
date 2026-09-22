@@ -1,3 +1,6 @@
+ENV APP_URL=http://localhost
+ENV VITE_URL=http://localhost
+
 # PHP + Apache
 FROM php:8.2-apache
 
