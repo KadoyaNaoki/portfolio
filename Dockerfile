@@ -26,21 +26,13 @@ ENV NODE_ENV=development
 # Node パッケージ
 RUN npm install --legacy-peer-deps
 
-# Vite ビルド用の仮環境変数
-ENV APP_URL=http://localhost
-ENV VITE_URL=http://localhost
-
-# Vite ビルド
-RUN npm run build
-
-# Vite ビルド用の仮環境変数
-ENV APP_URL=http://localhost
-ENV VITE_URL=http://localhost
-
-# Vite ビルド
+# Vite ビルド（1回だけ）
 RUN npm run build
 
 # Laravel キャッシュ
+RUN php artisan config:clear
+RUN php artisan route:clear
+RUN php artisan view:clear
 RUN php artisan config:cache
 RUN php artisan route:cache
 
