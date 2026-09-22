@@ -1,5 +1,8 @@
 #!/bin/bash
 
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache storage/logs storage/framework
+
 # キャッシュクリア
 php artisan config:clear
 php artisan route:clear
