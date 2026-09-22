@@ -7,7 +7,10 @@ use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Throwable;
 
 class UserService
 {
@@ -49,7 +52,16 @@ class UserService
 			$data['avatar_path'] = $this->replaceAvatar($user, $avatar);
 		}
 
-		return $this->users->update($user, $data);
+		try {
+			return DB::transaction(fn () => $this->users->update($user, $data));
+		} catch (Throwable $e) {
+			Log::error('UserService::updateProfile failed', [
+				'user_id' => $user->id,
+				'error' => $e->getMessage(),
+			]);
+
+			throw $e;
+		}
 	}
 
 	/**
@@ -57,12 +69,21 @@ class UserService
 	 */
 	public function register(string $userid, string $name, string $password): User
 	{
-		return $this->users->create([
-			'userid' => $userid,
-			'name' => $name,
-			'password' => $password,
-			'role' => UserRole::USER,
-		]);
+		try {
+			return DB::transaction(fn () => $this->users->create([
+				'userid' => $userid,
+				'name' => $name,
+				'password' => $password,
+				'role' => UserRole::USER,
+			]));
+		} catch (Throwable $e) {
+			Log::error('UserService::register failed', [
+				'userid' => $userid,
+				'error' => $e->getMessage(),
+			]);
+
+			throw $e;
+		}
 	}
 
 	/**
@@ -70,12 +91,22 @@ class UserService
 	 */
 	public function createWithRole(string $userid, string $name, string $password, UserRole $role): User
 	{
-		return $this->users->create([
-			'userid' => $userid,
-			'name' => $name,
-			'password' => $password,
-			'role' => $role,
-		]);
+		try {
+			return DB::transaction(fn () => $this->users->create([
+				'userid' => $userid,
+				'name' => $name,
+				'password' => $password,
+				'role' => $role,
+			]));
+		} catch (Throwable $e) {
+			Log::error('UserService::createWithRole failed', [
+				'userid' => $userid,
+				'role' => $role->value,
+				'error' => $e->getMessage(),
+			]);
+
+			throw $e;
+		}
 	}
 
 	/**
@@ -126,7 +157,17 @@ class UserService
 			}
 		}
 
-		return $this->users->deleteByIds($targets);
+		try {
+			return DB::transaction(fn () => $this->users->deleteByIds($targets));
+		} catch (Throwable $e) {
+			Log::error('UserService::deleteByIds failed', [
+				'ids' => $targets,
+				'acting_user_id' => $actingUserId,
+				'error' => $e->getMessage(),
+			]);
+
+			throw $e;
+		}
 	}
 
 	/**

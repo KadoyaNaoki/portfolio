@@ -47,12 +47,12 @@
 	<title>@yield('title')</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
-	@vite('resources/css/style.css')
+	@vite(['resources/css/style.css', 'resources/js/app.js'])
 	</head>
 
 	<body>
 	<header class="topbar">
-			<h1 class="topbar-title">@yield('title')</h1>
+	<h1 class="topbar-title">@yield('title')</h1>
 	</header>
 
 	<div class="container">

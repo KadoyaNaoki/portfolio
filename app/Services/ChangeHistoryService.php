@@ -6,7 +6,9 @@ use App\Models\ChangeHistory;
 use App\Models\User;
 use App\Repositories\Contracts\ChangeHistoryRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ChangeHistoryService
 {
@@ -41,7 +43,16 @@ class ChangeHistoryService
 			return 0;
 		}
 
-		$deleted = $this->histories->deleteByIds($targets);
+		try {
+			$deleted = DB::transaction(fn () => $this->histories->deleteByIds($targets));
+		} catch (Throwable $e) {
+			Log::error('ChangeHistoryService::deleteByIds failed', [
+				'ids' => $targets,
+				'error' => $e->getMessage(),
+			]);
+
+			throw $e;
+		}
 
 		Log::info('ChangeHistoryService::deleteByIds', [
 			'deleted' => $deleted,
@@ -62,12 +73,22 @@ class ChangeHistoryService
 			'body_length' => mb_strlen($body),
 		]);
 
-		return $this->histories->create([
-			'user_id' => $author->id,
-			'userid' => $author->userid,
-			'body' => $body,
-			// 履歴登録日
-			'registered_at' => now(),
-		]);
+		try {
+			return DB::transaction(fn () => $this->histories->create([
+				'user_id' => $author->id,
+				'userid' => $author->userid,
+				'body' => $body,
+				// 履歴登録日
+				'registered_at' => now(),
+			]));
+		} catch (Throwable $e) {
+			Log::error('ChangeHistoryService::create failed', [
+				'user_id' => $author->id,
+				'userid' => $author->userid,
+				'error' => $e->getMessage(),
+			]);
+
+			throw $e;
+		}
 	}
 }
