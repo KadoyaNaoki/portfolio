@@ -37,3 +37,6 @@ RUN docker-php-ext-install pdo_pgsql
 
 EXPOSE 80
 CMD ["apache2-foreground"]
+
+RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chmod -R 775 storage bootstrap/cache
