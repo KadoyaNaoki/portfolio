@@ -30,6 +30,7 @@ RUN npm install --legacy-peer-deps
 RUN npm run build
 
 # Laravel キャッシュ
+RUN php artisan optimize:clear
 RUN php artisan config:clear
 RUN php artisan route:clear
 RUN php artisan view:clear
