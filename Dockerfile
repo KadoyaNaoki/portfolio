@@ -23,6 +23,13 @@ RUN composer install --no-dev --optimize-autoloader --prefer-dist
 # Node パッケージ
 RUN npm install
 
+# Vite ビルド用の仮環境変数
+ENV APP_URL=http://localhost
+ENV VITE_URL=http://localhost
+
+# Vite ビルド
+RUN npm run build
+
 # Laravel キャッシュ
 RUN php artisan config:cache
 RUN php artisan route:cache
