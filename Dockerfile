@@ -24,5 +24,8 @@ RUN mkdir -p storage/logs storage/framework/sessions storage/framework/cache sto
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 80
 CMD ["/entrypoint.sh"]
