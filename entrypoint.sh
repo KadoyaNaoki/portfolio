@@ -1,13 +1,10 @@
 #!/bin/bash
-
-# 最初に Laravel ディレクトリへ移動
 cd /var/www/html
 
-# storage/logs を強制的に作成（root が作る前に）
-mkdir -p storage/logs
-mkdir -p storage/framework/sessions storage/framework/cache storage/framework/views
+# storage/logs を強制作成（root が作る前に）
+mkdir -p storage/logs storage/framework/sessions storage/framework/cache storage/framework/views
 
-# 起動直後に権限付与
+# 権限付与
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 
