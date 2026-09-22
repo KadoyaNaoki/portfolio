@@ -20,6 +20,7 @@ RUN npm run build
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
+RUN mkdir -p storage/logs storage/framework/sessions storage/framework/cache storage/framework/views
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 
