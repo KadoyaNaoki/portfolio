@@ -27,5 +27,5 @@ RUN chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-EXPOSE 80
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["apache2-foreground"]
