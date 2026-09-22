@@ -3,8 +3,8 @@ FROM php:8.2-apache
 
 # 必要な拡張をインストール
 RUN apt-get update && apt-get install -y \
-    libpng-dev libonig-dev libxml2-dev zip unzip git curl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    libpng-dev libonig-dev libxml2-dev zip unzip git curl libpq-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd pdo_pgsql
 
 # Node.js（公式）をインストール
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
