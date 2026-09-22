@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Laravel のディレクトリに移動
+cd /var/www/html
+
 chown -R www-data:www-data storage bootstrap/cache
 chmod -R 775 storage bootstrap/cache storage/logs storage/framework
 
