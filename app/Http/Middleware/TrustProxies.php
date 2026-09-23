@@ -9,5 +9,6 @@ class TrustProxies extends Middleware
 {
     protected $proxies = '*';
 
-    protected $headers = Request::HEADER_X_FORWARDED_AWS_ELB;
+    // Render / AWS ELB 環境ではこれが最適
+    protected $headers = Request::HEADER_X_FORWARDED_PROTO;
 }
