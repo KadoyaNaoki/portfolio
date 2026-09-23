@@ -31,52 +31,52 @@ use Illuminate\Support\Facades\Log;
  */
 final class AccessLog
 {
-	/**
-	 * 区切り文字（47 個のアスタリスク）.
-	 */
-	private const MARKER = '***********************************************';
+    /**
+     * 区切り文字（47 個のアスタリスク）.
+     */
+    private const MARKER = '***********************************************';
 
-	/**
-	 * 値が無い場合の表示.
-	 */
-	private const EMPTY_VALUE = '-';
+    /**
+     * 値が無い場合の表示.
+     */
+    private const EMPTY_VALUE = '-';
 
-	/**
-	 * 日時の書式（他のログと揃える）.
-	 */
-	private const DATETIME_FORMAT = 'Y/m/d H:i:s';
+    /**
+     * 日時の書式（他のログと揃える）.
+     */
+    private const DATETIME_FORMAT = 'Y/m/d H:i:s';
 
-	/**
-	 * アクセスログを 5 行で出力する.
-	 *
-	 * @param  string  $path  相対パス（例: users/23/edit、artisan users:create-general）
-	 * @param  int|null  $userId  users.id（未ログイン・バッチは null）
-	 * @param  string|null  $userid  users.userid（未ログイン・バッチは null）
-	 */
-	public static function log(string $path, ?int $userId = null, ?string $userid = null): void
-	{
-		$lines = [
-			self::MARKER,
-			// 書き込んだ日時
-			now()->format(self::DATETIME_FORMAT),
-			ltrim($path, '/'),
-			'users.id : '.self::value($userId),
-			'users.userid : '.self::value($userid),
-		];
+    /**
+     * アクセスログを 5 行で出力する.
+     *
+     * @param  string  $path  相対パス（例: users/23/edit、artisan users:create-general）
+     * @param  int|null  $userId  users.id（未ログイン・バッチは null）
+     * @param  string|null  $userid  users.userid（未ログイン・バッチは null）
+     */
+    public static function log(string $path, ?int $userId = null, ?string $userid = null): void
+    {
+        $lines = [
+            self::MARKER,
+            // 書き込んだ日時
+            now()->format(self::DATETIME_FORMAT),
+            ltrim($path, '/'),
+            'users.id : '.self::value($userId),
+            'users.userid : '.self::value($userid),
+        ];
+        // 5 行を 1 レコードとして書き込む（行間だけ改行し、末尾には付けない）
+        Log::channel('stdout')->info(implode(PHP_EOL, $lines));
 
-		// 5 行を 1 レコードとして書き込む（行間だけ改行し、末尾には付けない）
-		Log::channel('daily')->info(implode(PHP_EOL, $lines));
-	}
+    }
 
-	/**
-	 * null / 空文字は "-" に置き換える.
-	 */
-	private static function value(mixed $value): string
-	{
-		if ($value === null || $value === '') {
-			return self::EMPTY_VALUE;
-		}
+    /**
+     * null / 空文字は "-" に置き換える.
+     */
+    private static function value(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return self::EMPTY_VALUE;
+        }
 
-		return (string) $value;
-	}
+        return (string) $value;
+    }
 }
