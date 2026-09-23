@@ -24,6 +24,7 @@ RUN echo "<VirtualHost *:80>\n\
     RewriteEngine On\n\
     RewriteCond %{HTTP:X-Forwarded-Proto} =http\n\
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\
+    SetEnvIf X-Forwarded-Proto https HTTPS=on\n\
 </VirtualHost>" \
 >> /etc/apache2/sites-available/000-default.conf
 
