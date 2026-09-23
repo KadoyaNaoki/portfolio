@@ -67,7 +67,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['stdout'], // ← daily を外す
+            'channels' => ['stdout'],
             'ignore_exceptions' => false,
         ],
 
