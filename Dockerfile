@@ -20,8 +20,12 @@ RUN npm run build
 RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
-RUN echo "RewriteEngine On\nRewriteCond %{HTTPS} !=on\nRewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]" \
-    >> /etc/apache2/sites-available/000-default.conf
+RUN echo "<VirtualHost *:80>\n\
+    RewriteEngine On\n\
+    RewriteCond %{HTTP:X-Forwarded-Proto} =http\n\
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\
+</VirtualHost>" \
+>> /etc/apache2/sites-available/000-default.conf
 
 RUN mkdir -p storage/logs storage/framework/sessions storage/framework/cache storage/framework/views
 RUN chown -R www-data:www-data storage bootstrap/cache
