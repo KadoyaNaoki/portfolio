@@ -64,11 +64,7 @@ final class AccessLog
             'users.userid : '.self::value($userid),
         ];
         // 5 行を 1 レコードとして書き込む（行間だけ改行し、末尾には付けない）
-        if (! empty($path)) {
-            Log::channel('daily')->info(implode(PHP_EOL, $lines));
-        } else {
-            Log::channel('stdout')->info(implode(PHP_EOL, $lines));
-        }
+        Log::channel('stdout')->info(implode(PHP_EOL, $lines));
 
     }
 
