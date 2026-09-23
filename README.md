@@ -6,8 +6,8 @@
 
 ## URL
 https://portfolio-07n7.onrender.com/
-ユーザーID：admin_test
-パスワード：testtest
+- ユーザーID：admin_test
+- パスワード：testtest
 
 ## 目次
 
