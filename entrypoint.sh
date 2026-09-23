@@ -1,6 +1,9 @@
 #!/bin/bash
 cd /var/www/html
 
+# Apache が勝手に起動していたら停止（Render 対策）
+apachectl stop 2>/dev/null || true
+
 # storage/logs を強制作成（root が作る前に）
 mkdir -p storage/logs storage/framework/sessions storage/framework/cache storage/framework/views
 
@@ -16,5 +19,5 @@ php artisan view:clear
 # マイグレーション
 php artisan migrate --force || true
 
-# Apache 起動
+# Apache をここで初めて起動
 apache2-foreground
